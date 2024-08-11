@@ -15,11 +15,8 @@ const Redirect = (): JSX.Element => {
     useEffect(() => {
         const fetchUrl = async () => {
             try {
-                const response = await axios.get<ShortUrlResponse>(`https://spot2-system.org/api/short-urls/${shortCode}`);
+                const response = await axios.get<ShortUrlResponse>(`${process.env.REACT_APP_API_BASE_URL}/api/short-urls/${shortCode}`);
                 console.log('original_url', response.data.data.original_url);
-                // window.location.href = response.data.data.original_url;
-                // window.open(response.data.data.original_url, '_blank');
-                // navigate('/');
                 setTimeout(() => {
                     window.open(response.data.data.original_url, '_blank');
                     navigate('/');

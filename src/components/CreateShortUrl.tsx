@@ -16,7 +16,7 @@ const CreateUrl = (): JSX.Element => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await axios.post<ShortUrlResponse>('https://spot2-system.org/api/short-urls', { original_url: originalUrl });
+            const response = await axios.post<ShortUrlResponse>(`${process.env.REACT_APP_API_BASE_URL}/api/short-urls`, { original_url: originalUrl });
             setShortUrl(response.data.data.code);
             navigate(`/`);
         } catch (error) {
@@ -25,7 +25,6 @@ const CreateUrl = (): JSX.Element => {
     };
 
     const handleRedirect = () => {
-        setLoading(true);
         navigate(`/`);
     };
 
@@ -44,19 +43,9 @@ const CreateUrl = (): JSX.Element => {
                 />
                 <div className="flex gap-3">
                     <button type="submit" className="bg-indigo-500 text-white px-4 py-2 rounded hover:hover:bg-indigo-600">create</button>
-                    <button type="button" onClick={() => handleRedirect} className="bg-white text-indigo-500 border border-indigo-500 px-4 py-2 rounded hover:bg-indigo-600 hover:text-white">cancel</button>
+                    <button type="button" onClick={handleRedirect} className="bg-white text-indigo-500 border border-indigo-500 px-4 py-2 rounded hover:bg-indigo-600 hover:text-white">cancel</button>
                 </div>
             </form>
-            {/* {shortUrl && (
-                <div>
-                    {loading ? (
-                        <p>Wait a moment...</p>
-                    ) : (
-                        <p>Short URL: <button onClick={handleRedirect} className="text-blue-500">{`${shortUrl}`}</button>
-                        </p>
-                    )}
-                </div>
-            )} */}
         </div>
     );
 };

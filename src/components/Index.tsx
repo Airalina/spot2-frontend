@@ -19,7 +19,7 @@ const Index = (): JSX.Element => {
     useEffect(() => {
         const fetchShortUrls = async () => {
             try {
-                const response = await axios.get<ApiResponse<ShortUrl[]>>('https://spot2-system.org/api/short-urls');
+                const response = await axios.get<ApiResponse<ShortUrl[]>>(`${process.env.REACT_APP_API_BASE_URL}/api/short-urls`);
                 setShortUrls(response.data.data);
 
             } catch (error) {
@@ -32,7 +32,7 @@ const Index = (): JSX.Element => {
 
     const deleteShortUrl = async (code: string) => {
         try {
-            await axios.delete(`https://spot2-system.org/api/short-urls/${code}`);
+            await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/short-urls/${code}`);
             setShortUrls(shortUrls.filter(url => url.code !== code));
         } catch (error) {
             console.error('Error deleting short URL:', error);
@@ -40,14 +40,7 @@ const Index = (): JSX.Element => {
     };
 
     const handleRedirect = async (code: string) => {
-         navigate(`/${code}`);
-        // try {
-        //     const response = await axios.get<ApiResponse<ShortUrl>>(`https://spot2-system.org/api/short-urls/${code}`);
-        //     const originalUrl = response.data.data.original_url;
-        //     window.open(originalUrl, '_blank');
-        // } catch (error) {
-        //     console.error('Error redirecting to original URL:', error);
-        // }
+        navigate(`/${code}`);
     };
 
     return (
@@ -98,20 +91,11 @@ const Index = (): JSX.Element => {
 
                                     <td className='px-4 py-2 text-gray-700 text-center'>{url.code}</td>
                                     <td className='px-4 py-2 text-gray-700 text-center'>{url.original_url.length > 60 ? `${url.original_url.substring(0, 60)}...` : url.original_url}</td>
-                                    {/* <td className=''>
-                                        <Link
-                                            to={`/${url.code}`}
-                                            className="text-blue-500"
-                                            onClick={() => handleRedirect(url.code)}
-                                        >
-                                            {`https://spot2-system.org/api/short-urls/${url.code}`}
-                                        </Link>
-                                    </td> */}
                                     <td className="px-4 py-2 text-gray-700 text-center flex justify-center gap-2">
                                         <button
                                             onClick={() => handleRedirect(url.code)}
                                         >
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                                 viewBox="0 0 24 24" className="w-5 h-5 m-auto"><path stroke="#1C274C" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m13 11 9-9m0 0h-5.344M22 2v5.344" /><path stroke="#1C274C" strokeLinecap="round" strokeWidth="1.5" d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2m10 10c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465c-.973-.973-1.3-2.342-1.409-4.535" /></svg>
                                         </button>
                                         <button
